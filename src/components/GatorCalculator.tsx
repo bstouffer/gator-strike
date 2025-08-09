@@ -530,7 +530,7 @@ const GatorCalculator: React.FC = () => {
         {/* Result Display */}
         <div ref={firstPanelRef}><Card className={`hud-panel p-6 text-center ${getResultColor(calculateGator.total_TN, calculateGator.auto_result)}`}>
           <div className="space-y-2">
-            <h2 className="text-2xl font-bold">TARGET NUMBER</h2>
+            <h2 className="text-2xl font-bold">MODIFIER SCORE</h2>
             <div className="hud-number text-6xl">
               {calculateGator.total_TN}
             </div>
