@@ -158,6 +158,23 @@ const GatorCalculator: React.FC = () => {
     R: useRef<HTMLDivElement>(null),
   } as const;
 
+  const firstPanelRef = useRef<HTMLDivElement>(null);
+  const [showBar, setShowBar] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => {
+      const el = firstPanelRef.current;
+      if (!el) { setShowBar(false); return; }
+      const bottom = el.getBoundingClientRect().bottom + window.scrollY;
+      const offset = 50;
+      const scrolled = window.scrollY + offset;
+      setShowBar(scrolled > bottom);
+    };
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
   const scrollToSection = (key: keyof typeof sectionRefs) => {
     const el = sectionRefs[key].current;
     if (!el) return;
@@ -509,7 +526,7 @@ const GatorCalculator: React.FC = () => {
         </div>
 
         {/* Result Display */}
-        <Card className={`hud-panel p-6 text-center ${getResultColor(calculateGator.total_TN, calculateGator.auto_result)}`}>
+        <div ref={firstPanelRef}><Card className={`hud-panel p-6 text-center ${getResultColor(calculateGator.total_TN, calculateGator.auto_result)}`}>
           <div className="space-y-2">
             <h2 className="text-2xl font-bold">TARGET NUMBER</h2>
             <div className="hud-number text-6xl">
@@ -521,7 +538,7 @@ const GatorCalculator: React.FC = () => {
               {calculateGator.auto_result === 'none' && `Roll 2D6 ≥ ${calculateGator.total_TN}`}
             </div>
           </div>
-        </Card>
+        </Card></div>
 
 {view === 'history' && (
           <Card className="hud-panel p-4">
@@ -762,7 +779,8 @@ const GatorCalculator: React.FC = () => {
         )}
         </div>
         {/* Floating Vertical Tab Bar */}
-        <div className="fixed left-3 top-1/2 z-50 transform -translate-y-1/2">
+        {showBar && (
+          <div className="fixed left-3 top-1/2 z-50 transform -translate-y-1/2">
           <Card className="hud-panel rounded-xl bg-background/70 backdrop-blur p-2 border">
             <div className="flex flex-col items-stretch gap-2">
               <Button
@@ -804,6 +822,7 @@ const GatorCalculator: React.FC = () => {
             </div>
           </Card>
         </div>
+        )}
       </div>
   );
 };
