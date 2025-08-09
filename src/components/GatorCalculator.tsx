@@ -376,6 +376,21 @@ const GatorCalculator: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-background p-4">
+      {/* Floating condensed TN chip */}
+      <div className="fixed top-3 left-0 right-0 z-50 pointer-events-none">
+        <div className="mx-auto w-fit">
+          <Card className={`hud-panel px-4 py-2 rounded-full backdrop-blur-md bg-background/70 border ${getResultColor(calculateGator.total_TN, calculateGator.auto_result)}`}>
+            <div className="flex items-center gap-3">
+              <Crosshair className="w-4 h-4 text-primary" />
+              <span className="text-xs tracking-widest opacity-80">TN</span>
+              <span className="hud-number text-2xl">{calculateGator.total_TN}</span>
+              <span className="text-xs text-muted-foreground">
+                {calculateGator.auto_result === 'auto_hit' ? 'AUTO HIT' : calculateGator.auto_result === 'auto_miss' ? 'AUTO MISS' : `${calculateGator.gator.R.bracket.toUpperCase()} • 2D6 ≥ ${calculateGator.total_TN}`}
+              </span>
+            </div>
+          </Card>
+        </div>
+      </div>
       <div className="max-w-7xl mx-auto space-y-6">
         {/* Header */}
         <div className="text-center space-y-4">
@@ -418,9 +433,11 @@ const GatorCalculator: React.FC = () => {
                 <Slider
                   value={[attacker.gunnery]}
                   onValueChange={(value) => setAttacker(prev => ({ ...prev, gunnery: value[0] }))}
+                  onValueCommit={(value) => setAttacker(prev => ({ ...prev, gunnery: value[0] }))}
                   min={0}
                   max={8}
                   step={1}
+                  aria-label="Gunnery"
                   className="hud-slider"
                 />
                 <div className="text-center text-sm">{attacker.gunnery}</div>
@@ -459,9 +476,11 @@ const GatorCalculator: React.FC = () => {
                 <Slider
                   value={[attacker.heat_points]}
                   onValueChange={(value) => setAttacker(prev => ({ ...prev, heat_points: value[0] }))}
+                  onValueCommit={(value) => setAttacker(prev => ({ ...prev, heat_points: value[0] }))}
                   min={0}
                   max={30}
                   step={1}
+                  aria-label="Heat"
                   className="hud-slider"
                 />
               </div>
@@ -482,9 +501,11 @@ const GatorCalculator: React.FC = () => {
                 <Slider
                   value={[target.target_moved_hexes_from_last_reverse]}
                   onValueChange={(value) => setTarget(prev => ({ ...prev, target_moved_hexes_from_last_reverse: value[0] }))}
+                  onValueCommit={(value) => setTarget(prev => ({ ...prev, target_moved_hexes_from_last_reverse: value[0] }))}
                   min={0}
                   max={30}
                   step={1}
+                  aria-label="Target hexes moved"
                   className="hud-slider"
                 />
               </div>
@@ -567,9 +588,11 @@ const GatorCalculator: React.FC = () => {
                 <Slider
                   value={[attackContext.range_hexes]}
                   onValueChange={(value) => setAttackContext(prev => ({ ...prev, range_hexes: value[0] }))}
+                  onValueCommit={(value) => setAttackContext(prev => ({ ...prev, range_hexes: value[0] }))}
                   min={1}
                   max={30}
                   step={1}
+                  aria-label="Range (hexes)"
                   className="hud-slider"
                 />
               </div>
