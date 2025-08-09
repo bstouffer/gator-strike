@@ -697,7 +697,7 @@ const GatorCalculator: React.FC = () => {
                     variant="hud"
                     size="sm"
                     className={`hud-button text-xs ${target.target_is_in_light_woods ? 'active' : ''}`}
-                    onClick={() => { setTarget(prev => ({ ...prev, target_is_in_light_woods: !prev.target_is_in_light_woods })); setDirty(d => ({ ...d, O: true })); }}
+                    onClick={() => { setTarget(prev => { const next = !prev.target_is_in_light_woods; return { ...prev, target_is_in_light_woods: next, target_is_in_heavy_woods: next ? false : prev.target_is_in_heavy_woods }; }); setDirty(d => ({ ...d, O: true })); }}
                   >
                     LT WOODS
                   </Button>
@@ -705,7 +705,7 @@ const GatorCalculator: React.FC = () => {
                     variant="hud"
                     size="sm"
                     className={`hud-button text-xs ${target.target_is_in_heavy_woods ? 'active' : ''}`}
-                    onClick={() => { setTarget(prev => ({ ...prev, target_is_in_heavy_woods: !prev.target_is_in_heavy_woods })); setDirty(d => ({ ...d, O: true })); }}
+                    onClick={() => { setTarget(prev => { const next = !prev.target_is_in_heavy_woods; return { ...prev, target_is_in_heavy_woods: next, target_is_in_light_woods: next ? false : prev.target_is_in_light_woods }; }); setDirty(d => ({ ...d, O: true })); }}
                   >
                     HV WOODS
                   </Button>
