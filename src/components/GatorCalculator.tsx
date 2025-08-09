@@ -1,5 +1,5 @@
-import React, { useState, useMemo } from 'react';
-import { Calculator, Target, Crosshair, Zap, Thermometer, AlertTriangle } from 'lucide-react';
+import React, { useState, useMemo, useEffect, useRef } from 'react';
+import { Calculator, Target, Crosshair, Zap, Thermometer, AlertTriangle, History, PlusCircle } from 'lucide-react';
 import { Slider } from '@/components/ui/slider';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -78,6 +78,15 @@ interface GatorResult {
   notes: string[];
 }
 
+interface ScoreRecord {
+  id: string;
+  timestamp: number;
+  tn: number;
+  auto: GatorResult['auto_result'];
+  bracket: string;
+  notes: string[];
+}
+
 const GatorCalculator: React.FC = () => {
   const [attacker, setAttacker] = useState<AttackerState>({
     gunnery: 4,
@@ -122,6 +131,97 @@ const GatorCalculator: React.FC = () => {
     is_head_aim: false,
     LOS_blocked: false,
   });
+
+  const [dirty, setDirty] = useState({ G: false, A: false, T: false, O: false, R: false });
+  const [view, setView] = useState<'calc' | 'history'>('calc');
+
+  const [history, setHistory] = useState<ScoreRecord[]>(() => {
+    try {
+      const raw = typeof window !== 'undefined' ? localStorage.getItem('gator-history') : null;
+      return raw ? JSON.parse(raw) : [];
+    } catch {
+      return [];
+    }
+  });
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('gator-history', JSON.stringify(history));
+    } catch {}
+  }, [history]);
+
+  const sectionRefs = {
+    G: useRef<HTMLDivElement>(null),
+    A: useRef<HTMLDivElement>(null),
+    T: useRef<HTMLDivElement>(null),
+    O: useRef<HTMLDivElement>(null),
+    R: useRef<HTMLDivElement>(null),
+  } as const;
+
+  const scrollToSection = (key: keyof typeof sectionRefs) => {
+    sectionRefs[key].current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
+  const handleNewScore = () => {
+    const record: ScoreRecord = {
+      id: String(Date.now()),
+      timestamp: Date.now(),
+      tn: calculateGator.total_TN,
+      auto: calculateGator.auto_result,
+      bracket: calculateGator.gator.R.bracket,
+      notes: calculateGator.notes,
+    };
+    setHistory((prev) => [record, ...prev]);
+
+    // Reset all states
+    setAttacker({
+      gunnery: 4,
+      moved_mode: 'stationary',
+      heat_points: 0,
+      damage_flags: {
+        sensor_hit: false,
+        shoulder_hit_arm_firing: false,
+        upper_arm_actuator_hit_arm_firing: 0,
+        lower_arm_actuator_hit_arm_firing: 0,
+      },
+      is_spotting_this_turn: false,
+      is_making_indirect_fire: false,
+      spotter_moved_mode: null,
+      spotter_has_LOS_to_target: false,
+      spotter_attacked_this_turn: false,
+      attacker_is_prone: false,
+    });
+
+    setTarget({
+      target_moved_hexes_from_last_reverse: 0,
+      target_jumped_this_turn: false,
+      target_is_prone: 'no',
+      target_is_immobile: false,
+      target_is_in_light_woods: false,
+      target_is_in_heavy_woods: false,
+      intervening_light_woods_hexes: 0,
+      intervening_heavy_woods_hexes: 0,
+      has_partial_cover: false,
+      partial_cover_from_water_depth1: false,
+      target_is_submerged: false,
+    });
+
+    setAttackContext({
+      weapon_name: 'PPC',
+      range_hexes: 10,
+      weapon_brackets: { short_max: 6, medium_max: 12, long_max: 18 },
+      weapon_min_range: 3,
+      is_secondary_target_in_forward_arc: false,
+      is_secondary_target_in_side_or_rear_arc: false,
+      is_aimed_shot: false,
+      is_head_aim: false,
+      LOS_blocked: false,
+    });
+
+    setDirty({ G: false, A: false, T: false, O: false, R: false });
+    setView('calc');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   const calculateGator = useMemo((): GatorResult => {
     const notes: string[] = [];
@@ -419,6 +519,35 @@ const GatorCalculator: React.FC = () => {
           </div>
         </Card>
 
+{view === 'history' && (
+          <Card className="hud-panel p-4">
+            <div className="space-y-2">
+              <h3 className="gator-header">HISTORY</h3>
+              {history.length === 0 ? (
+                <p className="text-sm text-muted-foreground">No scores yet. Tap New Score to save your current TN.</p>
+              ) : (
+                <div className="space-y-2">
+                  {history.map((h) => (
+                    <div key={h.id} className="flex items-center justify-between rounded border p-2">
+                      <div className="flex items-center gap-3">
+                        <span className="hud-number text-2xl">{h.tn}</span>
+                        <div className="text-xs text-muted-foreground">
+                          <div>{new Date(h.timestamp).toLocaleString()}</div>
+                          <div className="uppercase">{h.bracket}</div>
+                        </div>
+                      </div>
+                      <div className={`text-xs px-2 py-1 rounded ${h.auto==='auto_hit' ? 'status-good' : h.auto==='auto_miss' ? 'status-danger' : 'bg-muted'}`}>
+                        {h.auto==='auto_hit' ? 'AUTO HIT' : h.auto==='auto_miss' ? 'AUTO MISS' : 'NORMAL'}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </Card>
+        )}
+
+        {view !== 'history' && (
         {/* G.A.T.O.R. Breakdown */}
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-4">
           {/* G - Gunnery */}
@@ -624,6 +753,48 @@ const GatorCalculator: React.FC = () => {
           </Card>
         )}
         <div className="h-24 md:h-12" aria-hidden="true" />
+        </div>
+        {/* Bottom Tab Bar */}
+        <div className="fixed bottom-3 left-0 right-0 z-50">
+          <div className="mx-auto w-fit">
+            <Card className="hud-panel rounded-full bg-background/70 backdrop-blur px-3 py-2 border">
+              <div className="flex items-center gap-2">
+                <Button variant="hud" size="sm" className={`hud-button text-xs ${view==='history' ? 'active' : ''}`} onClick={() => setView(view==='history' ? 'calc' : 'history')} aria-label="Toggle history">
+                  <History className="w-4 h-4" />
+                  <span className="ml-1 hidden sm:inline">{view==='history' ? 'Back' : 'History'}</span>
+                </Button>
+                <div className="h-5 w-px bg-border/60 mx-1" aria-hidden="true" />
+                <div className="flex items-center gap-1">
+                  <Button variant="hud" size="sm" className="relative hud-button text-xs" onClick={() => { setView('calc'); scrollToSection('G'); }} aria-label="Go to G">
+                    G
+                    {dirty.G && <span className="absolute -top-0.5 -right-0.5 h-2 w-2 rounded-full bg-primary" />}
+                  </Button>
+                  <Button variant="hud" size="sm" className="relative hud-button text-xs" onClick={() => { setView('calc'); scrollToSection('A'); }} aria-label="Go to A">
+                    A
+                    {dirty.A && <span className="absolute -top-0.5 -right-0.5 h-2 w-2 rounded-full bg-primary" />}
+                  </Button>
+                  <Button variant="hud" size="sm" className="relative hud-button text-xs" onClick={() => { setView('calc'); scrollToSection('T'); }} aria-label="Go to T">
+                    T
+                    {dirty.T && <span className="absolute -top-0.5 -right-0.5 h-2 w-2 rounded-full bg-primary" />}
+                  </Button>
+                  <Button variant="hud" size="sm" className="relative hud-button text-xs" onClick={() => { setView('calc'); scrollToSection('O'); }} aria-label="Go to O">
+                    O
+                    {dirty.O && <span className="absolute -top-0.5 -right-0.5 h-2 w-2 rounded-full bg-primary" />}
+                  </Button>
+                  <Button variant="hud" size="sm" className="relative hud-button text-xs" onClick={() => { setView('calc'); scrollToSection('R'); }} aria-label="Go to R">
+                    R
+                    {dirty.R && <span className="absolute -top-0.5 -right-0.5 h-2 w-2 rounded-full bg-primary" />}
+                  </Button>
+                </div>
+                <div className="h-5 w-px bg-border/60 mx-1" aria-hidden="true" />
+                <Button variant="hud" size="sm" className="hud-button text-xs" onClick={handleNewScore} aria-label="New score">
+                  <PlusCircle className="w-4 h-4" />
+                  <span className="ml-1 hidden sm:inline">New Score</span>
+                </Button>
+              </div>
+            </Card>
+          </div>
+        </div>
       </div>
     </div>
   );
