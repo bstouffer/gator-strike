@@ -498,20 +498,22 @@ const GatorCalculator: React.FC = () => {
   return (
     <div className="min-h-screen bg-background p-4 pb-28 pl-20">
       {/* Floating condensed TN chip */}
-      <div className="fixed top-3 left-0 right-0 z-50 pointer-events-none">
-        <div className="mx-auto w-fit">
-          <Card className={`hud-panel px-4 py-2 rounded-full backdrop-blur-md bg-background/70 border ${getResultColor(calculateGator.total_TN, calculateGator.auto_result)}`}>
-            <div className="flex items-center gap-3">
-              <Crosshair className="w-4 h-4 text-primary" />
-              <span className="text-xs tracking-widest opacity-80">TN</span>
-              <span className="hud-number text-2xl">{calculateGator.total_TN}</span>
-              <span className="text-xs text-muted-foreground">
-                {calculateGator.auto_result === 'auto_hit' ? 'AUTO HIT' : calculateGator.auto_result === 'auto_miss' ? 'AUTO MISS' : `${calculateGator.gator.R.bracket.toUpperCase()} • 2D6 ≥ ${calculateGator.total_TN}`}
-              </span>
-            </div>
-          </Card>
+      {showBar && (
+        <div className="fixed top-3 left-0 right-0 z-50 pointer-events-none">
+          <div className="mx-auto w-fit">
+            <Card className={`hud-panel px-4 py-2 rounded-full backdrop-blur-md bg-background/70 border ${getResultColor(calculateGator.total_TN, calculateGator.auto_result)}`}>
+              <div className="flex items-center gap-3">
+                <Crosshair className="w-4 h-4 text-primary" />
+                <span className="text-xs tracking-widest opacity-80">TN</span>
+                <span className="hud-number text-2xl">{calculateGator.total_TN}</span>
+                <span className="text-xs text-muted-foreground">
+                  {calculateGator.auto_result === 'auto_hit' ? 'AUTO HIT' : calculateGator.auto_result === 'auto_miss' ? 'AUTO MISS' : `${calculateGator.gator.R.bracket.toUpperCase()} • 2D6 ≥ ${calculateGator.total_TN}`}
+                </span>
+              </div>
+            </Card>
+          </div>
         </div>
-      </div>
+      )}
       <div className="max-w-7xl mx-auto space-y-6">
         {/* Header */}
         <div className="text-center space-y-4">
@@ -779,8 +781,7 @@ const GatorCalculator: React.FC = () => {
         )}
         </div>
         {/* Floating Vertical Tab Bar */}
-        {showBar && (
-          <div className="fixed left-3 top-1/2 z-50 transform -translate-y-1/2">
+        <div className="fixed left-3 top-1/2 z-50 transform -translate-y-1/2">
           <Card className="hud-panel rounded-xl bg-background/70 backdrop-blur p-2 border">
             <div className="flex flex-col items-stretch gap-2">
               <Button
@@ -822,7 +823,6 @@ const GatorCalculator: React.FC = () => {
             </div>
           </Card>
         </div>
-        )}
       </div>
   );
 };
