@@ -787,12 +787,11 @@ const GatorCalculator: React.FC = () => {
                     aria-label="Minimum range inside amount"
                     disabled={calculateGator.gator.R.bracket !== 'short'}
                   >
-                    <ToggleGroupItem value="0">Equal</ToggleGroupItem>
-                    <ToggleGroupItem value="1">-1</ToggleGroupItem>
-                    <ToggleGroupItem value="2">-2</ToggleGroupItem>
-                    <ToggleGroupItem value="3">-3</ToggleGroupItem>
-                    <ToggleGroupItem value="4">-4</ToggleGroupItem>
-                    <ToggleGroupItem value="5">-5</ToggleGroupItem>
+                    {Array.from({ length: Math.min(5, Math.max(0, attackContext.weapon_min_range - 1)) + 1 }).map((_, idx) => (
+                      <ToggleGroupItem key={idx} value={`${idx}`}>
+                        {idx === 0 ? 'Equal' : `-${idx}`}
+                      </ToggleGroupItem>
+                    ))}
                   </ToggleGroup>
                 </div>
 
