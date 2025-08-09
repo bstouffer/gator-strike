@@ -1,6 +1,7 @@
 import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { Calculator, Target, Crosshair, Zap, Thermometer, AlertTriangle, History, PlusCircle } from 'lucide-react';
 import { Slider } from '@/components/ui/slider';
+import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 
@@ -736,22 +737,69 @@ const GatorCalculator: React.FC = () => {
               <div className="text-center">
                 <div className="hud-number text-3xl">+{calculateGator.gator.R.bracket_mod + calculateGator.gator.R.min_range_mod}</div>
               </div>
-              <div className="space-y-2">
-                <label className="text-sm text-muted-foreground">Range: {attackContext.range_hexes} hexes</label>
-                <Slider
-                  value={[attackContext.range_hexes]}
-                  onValueChange={(value) => { setAttackContext(prev => ({ ...prev, range_hexes: value[0] })); setDirty(d => ({ ...d, R: true })); }}
-                  onValueCommit={(value) => { setAttackContext(prev => ({ ...prev, range_hexes: value[0] })); setDirty(d => ({ ...d, R: true })); }}
-                  min={1}
-                  max={30}
-                  step={1}
-                  aria-label="Range (hexes)"
-                  className="hud-slider"
-                />
-              </div>
-              <div className="text-center text-xs">
-                <div className={`px-2 py-1 rounded ${calculateGator.gator.R.bracket === 'short' ? 'status-good' : calculateGator.gator.R.bracket === 'medium' ? 'status-warning' : 'status-danger'}`}>
-                  {calculateGator.gator.R.bracket.toUpperCase()}
+              <div className="space-y-3">
+                <div className="text-center text-sm text-muted-foreground">Select Range</div>
+                <div className="flex justify-center">
+                  <ToggleGroup
+                    type="single"
+                    value={calculateGator.gator.R.bracket as "short" | "medium" | "long"}
+                    onValueChange={(v) => {
+                      if (!v) return;
+                      setDirty(d => ({ ...d, R: true }));
+                      setAttackContext(prev => {
+                        const wb = prev.weapon_brackets;
+                        const inside = Math.max(0, prev.weapon_min_range - prev.range_hexes);
+                        let newRange = prev.range_hexes;
+                        if (v === "short") {
+                          newRange = Math.max(1, prev.weapon_min_range - inside);
+                        } else if (v === "medium") {
+                          newRange = wb.short_max + 1;
+                        } else {
+                          newRange = wb.medium_max + 1;
+                        }
+                        return { ...prev, range_hexes: newRange };
+                      });
+                    }}
+                    variant="outline"
+                    size="sm"
+                    aria-label="Select range bracket"
+                  >
+                    <ToggleGroupItem value="short">Short</ToggleGroupItem>
+                    <ToggleGroupItem value="medium">Medium</ToggleGroupItem>
+                    <ToggleGroupItem value="long">Long</ToggleGroupItem>
+                  </ToggleGroup>
+                </div>
+
+                <div className="text-center text-sm text-muted-foreground mt-2">Minimum</div>
+                <div className="flex justify-center">
+                  <ToggleGroup
+                    type="single"
+                    value={String(Math.max(0, attackContext.weapon_min_range - attackContext.range_hexes))}
+                    onValueChange={(v) => {
+                      if (!v) return;
+                      if (calculateGator.gator.R.bracket !== 'short') return;
+                      const k = Number(v);
+                      setDirty(d => ({ ...d, R: true }));
+                      setAttackContext(prev => ({ ...prev, range_hexes: Math.max(1, prev.weapon_min_range - k) }));
+                    }}
+                    variant="outline"
+                    size="sm"
+                    aria-label="Minimum range inside amount"
+                    disabled={calculateGator.gator.R.bracket !== 'short'}
+                  >
+                    <ToggleGroupItem value="0">Equal</ToggleGroupItem>
+                    <ToggleGroupItem value="1">-1</ToggleGroupItem>
+                    <ToggleGroupItem value="2">-2</ToggleGroupItem>
+                    <ToggleGroupItem value="3">-3</ToggleGroupItem>
+                    <ToggleGroupItem value="4">-4</ToggleGroupItem>
+                    <ToggleGroupItem value="5">-5</ToggleGroupItem>
+                  </ToggleGroup>
+                </div>
+
+                <div className="text-center text-xs">
+                  <div className={`px-2 py-1 rounded ${calculateGator.gator.R.bracket === 'short' ? 'status-good' : calculateGator.gator.R.bracket === 'medium' ? 'status-warning' : 'status-danger'}`}>
+                    {calculateGator.gator.R.bracket.toUpperCase()}
+                  </div>
                 </div>
               </div>
             </div>
