@@ -757,46 +757,48 @@ const GatorCalculator: React.FC = () => {
           </>
         )}
         </div>
-        {/* Bottom Tab Bar */}
-        <div className="fixed bottom-3 left-0 right-0 z-50">
-          <div className="mx-auto w-fit">
-            <Card className="hud-panel rounded-full bg-background/70 backdrop-blur px-3 py-2 border">
-              <div className="flex items-center gap-2">
-                <Button variant="hud" size="sm" className={`hud-button text-xs ${view==='history' ? 'active' : ''}`} onClick={() => setView(view==='history' ? 'calc' : 'history')} aria-label="Toggle history">
-                  <History className="w-4 h-4" />
-                  <span className="ml-1 hidden sm:inline">{view==='history' ? 'Back' : 'History'}</span>
-                </Button>
-                <div className="h-5 w-px bg-border/60 mx-1" aria-hidden="true" />
-                <div className="flex items-center gap-1">
-                  <Button variant="hud" size="sm" className="relative hud-button text-xs" onClick={() => { setView('calc'); scrollToSection('G'); }} aria-label="Go to G">
-                    G
-                    {dirty.G && <span className="absolute -top-0.5 -right-0.5 h-2 w-2 rounded-full bg-primary" />}
-                  </Button>
-                  <Button variant="hud" size="sm" className="relative hud-button text-xs" onClick={() => { setView('calc'); scrollToSection('A'); }} aria-label="Go to A">
-                    A
-                    {dirty.A && <span className="absolute -top-0.5 -right-0.5 h-2 w-2 rounded-full bg-primary" />}
-                  </Button>
-                  <Button variant="hud" size="sm" className="relative hud-button text-xs" onClick={() => { setView('calc'); scrollToSection('T'); }} aria-label="Go to T">
-                    T
-                    {dirty.T && <span className="absolute -top-0.5 -right-0.5 h-2 w-2 rounded-full bg-primary" />}
-                  </Button>
-                  <Button variant="hud" size="sm" className="relative hud-button text-xs" onClick={() => { setView('calc'); scrollToSection('O'); }} aria-label="Go to O">
-                    O
-                    {dirty.O && <span className="absolute -top-0.5 -right-0.5 h-2 w-2 rounded-full bg-primary" />}
-                  </Button>
-                  <Button variant="hud" size="sm" className="relative hud-button text-xs" onClick={() => { setView('calc'); scrollToSection('R'); }} aria-label="Go to R">
-                    R
-                    {dirty.R && <span className="absolute -top-0.5 -right-0.5 h-2 w-2 rounded-full bg-primary" />}
-                  </Button>
-                </div>
-                <div className="h-5 w-px bg-border/60 mx-1" aria-hidden="true" />
-                <Button variant="hud" size="sm" className="hud-button text-xs" onClick={handleNewScore} aria-label="New score">
-                  <PlusCircle className="w-4 h-4" />
-                  <span className="ml-1 hidden sm:inline">New Score</span>
-                </Button>
-              </div>
-            </Card>
-          </div>
+        {/* Floating Vertical Tab Bar */}
+        <div className="fixed left-3 top-1/2 z-50 transform -translate-y-1/2">
+          <Card className="hud-panel rounded-xl bg-background/70 backdrop-blur p-2 border">
+            <div className="flex flex-col items-stretch gap-2">
+              <Button
+                variant="hud"
+                size="sm"
+                className={`hud-button text-xs ${view==='history' ? 'active' : ''}`}
+                onClick={() => setView(view==='history' ? 'calc' : 'history')}
+                aria-label="Toggle history"
+              >
+                <History className="w-4 h-4" />
+                <span className="ml-1 hidden xl:inline">{view==='history' ? 'Back' : 'History'}</span>
+              </Button>
+              <div className="h-px w-full bg-border/60" aria-hidden="true" />
+              <Button variant="hud" size="sm" className="relative hud-button text-xs" onClick={() => { setView('calc'); scrollToSection('G'); }} aria-label="Go to G">
+                G
+                {dirty.G && <span className="absolute -top-0.5 -right-0.5 h-2 w-2 rounded-full bg-primary" />}
+              </Button>
+              <Button variant="hud" size="sm" className="relative hud-button text-xs" onClick={() => { setView('calc'); scrollToSection('A'); }} aria-label="Go to A">
+                A
+                {dirty.A && <span className="absolute -top-0.5 -right-0.5 h-2 w-2 rounded-full bg-primary" />}
+              </Button>
+              <Button variant="hud" size="sm" className="relative hud-button text-xs" onClick={() => { setView('calc'); scrollToSection('T'); }} aria-label="Go to T">
+                T
+                {dirty.T && <span className="absolute -top-0.5 -right-0.5 h-2 w-2 rounded-full bg-primary" />}
+              </Button>
+              <Button variant="hud" size="sm" className="relative hud-button text-xs" onClick={() => { setView('calc'); scrollToSection('O'); }} aria-label="Go to O">
+                O
+                {dirty.O && <span className="absolute -top-0.5 -right-0.5 h-2 w-2 rounded-full bg-primary" />}
+              </Button>
+              <Button variant="hud" size="sm" className="relative hud-button text-xs" onClick={() => { setView('calc'); scrollToSection('R'); }} aria-label="Go to R">
+                R
+                {dirty.R && <span className="absolute -top-0.5 -right-0.5 h-2 w-2 rounded-full bg-primary" />}
+              </Button>
+              <div className="h-px w-full bg-border/60" aria-hidden="true" />
+              <Button variant="hud" size="sm" className="hud-button text-xs" onClick={handleNewScore} aria-label="New score">
+                <PlusCircle className="w-4 h-4" />
+                <span className="ml-1 hidden xl:inline">New Score</span>
+              </Button>
+            </div>
+          </Card>
         </div>
       </div>
   );
