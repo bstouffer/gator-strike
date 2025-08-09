@@ -479,7 +479,7 @@ const GatorCalculator: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background p-4 pb-28">
+    <div className="min-h-screen bg-background p-4 pb-28 pl-10">
       {/* Floating condensed TN chip */}
       <div className="fixed top-3 left-0 right-0 z-50 pointer-events-none">
         <div className="mx-auto w-fit">
