@@ -14,12 +14,12 @@ const App = () => (
       {/* Subtle mech background image behind UI */}
       <div aria-hidden className="fixed inset-0 -z-10 pointer-events-none">
         <img
-          src="/lovable-uploads/515f7342-6198-40fb-8a40-a0ee8b5002e4.png"
+          src="/lovable-uploads/144024ae-1546-4c33-ac58-1754bfb91f55.png"
           alt=""
           loading="lazy"
-          className="h-full w-full object-cover opacity-20 mix-blend-luminosity"
+          className="h-full w-full object-cover opacity-25 mix-blend-luminosity"
         />
-        <div className="absolute inset-0 bg-background/40" />
+        <div className="absolute inset-0 bg-background/50" />
       </div>
       <Toaster />
       <Sonner />
