@@ -23,7 +23,7 @@ const SpicyModal: React.FC<SpicyModalProps> = ({ isOpen, onClose }) => {
             autoPlay
             preload="metadata"
           >
-            <source src="/lovable-uploads/515f7342-6198-40fb-8a40-a0ee8b5002e4.png" type="video/mp4" />
+            <source src="/lovable-uploads/spicy-video.mp4" type="video/mp4" />
             Your browser does not support the video tag.
           </video>
         </div>
