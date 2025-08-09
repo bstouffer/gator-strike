@@ -566,8 +566,8 @@ const GatorCalculator: React.FC = () => {
                 <label className="text-sm text-muted-foreground">Pilot Skill</label>
                 <Slider
                   value={[attacker.gunnery]}
-                  onValueChange={(value) => setAttacker(prev => ({ ...prev, gunnery: value[0] }))}
-                  onValueCommit={(value) => setAttacker(prev => ({ ...prev, gunnery: value[0] }))}
+                  onValueChange={(value) => { setAttacker(prev => ({ ...prev, gunnery: value[0] })); setDirty(d => ({ ...d, G: true })); }}
+                  onValueCommit={(value) => { setAttacker(prev => ({ ...prev, gunnery: value[0] })); setDirty(d => ({ ...d, G: true })); }}
                   min={0}
                   max={8}
                   step={1}
@@ -595,7 +595,7 @@ const GatorCalculator: React.FC = () => {
                       variant="hud"
                       size="sm"
                       className={`hud-button text-xs ${attacker.moved_mode === mode ? 'active' : ''}`}
-                      onClick={() => setAttacker(prev => ({ ...prev, moved_mode: mode }))}
+                      onClick={() => { setAttacker(prev => ({ ...prev, moved_mode: mode })); setDirty(d => ({ ...d, A: true })); }}
                     >
                       {mode.toUpperCase()}
                     </Button>
@@ -609,8 +609,8 @@ const GatorCalculator: React.FC = () => {
                 </div>
                 <Slider
                   value={[attacker.heat_points]}
-                  onValueChange={(value) => setAttacker(prev => ({ ...prev, heat_points: value[0] }))}
-                  onValueCommit={(value) => setAttacker(prev => ({ ...prev, heat_points: value[0] }))}
+                  onValueChange={(value) => { setAttacker(prev => ({ ...prev, heat_points: value[0] })); setDirty(d => ({ ...d, A: true })); }}
+                  onValueCommit={(value) => { setAttacker(prev => ({ ...prev, heat_points: value[0] })); setDirty(d => ({ ...d, A: true })); }}
                   min={0}
                   max={30}
                   step={1}
@@ -634,8 +634,8 @@ const GatorCalculator: React.FC = () => {
                 <label className="text-sm text-muted-foreground">Hexes Moved: {target.target_moved_hexes_from_last_reverse}</label>
                 <Slider
                   value={[target.target_moved_hexes_from_last_reverse]}
-                  onValueChange={(value) => setTarget(prev => ({ ...prev, target_moved_hexes_from_last_reverse: value[0] }))}
-                  onValueCommit={(value) => setTarget(prev => ({ ...prev, target_moved_hexes_from_last_reverse: value[0] }))}
+                  onValueChange={(value) => { setTarget(prev => ({ ...prev, target_moved_hexes_from_last_reverse: value[0] })); setDirty(d => ({ ...d, T: true })); }}
+                  onValueCommit={(value) => { setTarget(prev => ({ ...prev, target_moved_hexes_from_last_reverse: value[0] })); setDirty(d => ({ ...d, T: true })); }}
                   min={0}
                   max={30}
                   step={1}
@@ -648,7 +648,7 @@ const GatorCalculator: React.FC = () => {
                   variant="hud"
                   size="sm"
                   className={`hud-button text-xs ${target.target_jumped_this_turn ? 'active' : ''}`}
-                  onClick={() => setTarget(prev => ({ ...prev, target_jumped_this_turn: !prev.target_jumped_this_turn }))}
+                  onClick={() => { setTarget(prev => ({ ...prev, target_jumped_this_turn: !prev.target_jumped_this_turn })); setDirty(d => ({ ...d, T: true })); }}
                 >
                   JUMPED
                 </Button>
@@ -656,7 +656,7 @@ const GatorCalculator: React.FC = () => {
                   variant="hud"
                   size="sm"
                   className={`hud-button text-xs ${target.target_is_immobile ? 'active' : ''}`}
-                  onClick={() => setTarget(prev => ({ ...prev, target_is_immobile: !prev.target_is_immobile }))}
+                  onClick={() => { setTarget(prev => ({ ...prev, target_is_immobile: !prev.target_is_immobile })); setDirty(d => ({ ...d, T: true })); }}
                 >
                   IMMOBILE
                 </Button>
@@ -677,7 +677,7 @@ const GatorCalculator: React.FC = () => {
                     variant="hud"
                     size="sm"
                     className={`hud-button text-xs ${target.target_is_in_light_woods ? 'active' : ''}`}
-                    onClick={() => setTarget(prev => ({ ...prev, target_is_in_light_woods: !prev.target_is_in_light_woods }))}
+                    onClick={() => { setTarget(prev => ({ ...prev, target_is_in_light_woods: !prev.target_is_in_light_woods })); setDirty(d => ({ ...d, O: true })); }}
                   >
                     LT WOODS
                   </Button>
@@ -685,7 +685,7 @@ const GatorCalculator: React.FC = () => {
                     variant="hud"
                     size="sm"
                     className={`hud-button text-xs ${target.target_is_in_heavy_woods ? 'active' : ''}`}
-                    onClick={() => setTarget(prev => ({ ...prev, target_is_in_heavy_woods: !prev.target_is_in_heavy_woods }))}
+                    onClick={() => { setTarget(prev => ({ ...prev, target_is_in_heavy_woods: !prev.target_is_in_heavy_woods })); setDirty(d => ({ ...d, O: true })); }}
                   >
                     HV WOODS
                   </Button>
@@ -693,7 +693,7 @@ const GatorCalculator: React.FC = () => {
                     variant="hud"
                     size="sm"
                     className={`hud-button text-xs ${target.has_partial_cover ? 'active' : ''}`}
-                    onClick={() => setTarget(prev => ({ ...prev, has_partial_cover: !prev.has_partial_cover }))}
+                    onClick={() => { setTarget(prev => ({ ...prev, has_partial_cover: !prev.has_partial_cover })); setDirty(d => ({ ...d, O: true })); }}
                   >
                     COVER
                   </Button>
@@ -701,7 +701,7 @@ const GatorCalculator: React.FC = () => {
                     variant="hud"
                     size="sm"
                     className={`hud-button text-xs ${attacker.is_making_indirect_fire ? 'active' : ''}`}
-                    onClick={() => setAttacker(prev => ({ ...prev, is_making_indirect_fire: !prev.is_making_indirect_fire }))}
+                    onClick={() => { setAttacker(prev => ({ ...prev, is_making_indirect_fire: !prev.is_making_indirect_fire })); setDirty(d => ({ ...d, O: true })); }}
                   >
                     INDIRECT
                   </Button>
@@ -721,8 +721,8 @@ const GatorCalculator: React.FC = () => {
                 <label className="text-sm text-muted-foreground">Range: {attackContext.range_hexes} hexes</label>
                 <Slider
                   value={[attackContext.range_hexes]}
-                  onValueChange={(value) => setAttackContext(prev => ({ ...prev, range_hexes: value[0] }))}
-                  onValueCommit={(value) => setAttackContext(prev => ({ ...prev, range_hexes: value[0] }))}
+                  onValueChange={(value) => { setAttackContext(prev => ({ ...prev, range_hexes: value[0] })); setDirty(d => ({ ...d, R: true })); }}
+                  onValueCommit={(value) => { setAttackContext(prev => ({ ...prev, range_hexes: value[0] })); setDirty(d => ({ ...d, R: true })); }}
                   min={1}
                   max={30}
                   step={1}
@@ -776,23 +776,23 @@ const GatorCalculator: React.FC = () => {
                 <span className="ml-1 hidden xl:inline">{view==='history' ? 'Back' : 'History'}</span>
               </Button>
               <div className="h-px w-full bg-border/60" aria-hidden="true" />
-              <Button variant="hud" size="sm" className="relative hud-button text-xs" onClick={() => { setView('calc'); scrollToSection('G'); }} aria-label="Go to G">
+              <Button variant="hud" size="sm" className={`relative hud-button text-xs ${dirty.G ? 'active' : ''}`} onClick={() => { setView('calc'); scrollToSection('G'); }} aria-label="Go to G">
                 G
                 {dirty.G && <span className="absolute -top-0.5 -right-0.5 h-2 w-2 rounded-full bg-primary" />}
               </Button>
-              <Button variant="hud" size="sm" className="relative hud-button text-xs" onClick={() => { setView('calc'); scrollToSection('A'); }} aria-label="Go to A">
+              <Button variant="hud" size="sm" className={`relative hud-button text-xs ${dirty.A ? 'active' : ''}`} onClick={() => { setView('calc'); scrollToSection('A'); }} aria-label="Go to A">
                 A
                 {dirty.A && <span className="absolute -top-0.5 -right-0.5 h-2 w-2 rounded-full bg-primary" />}
               </Button>
-              <Button variant="hud" size="sm" className="relative hud-button text-xs" onClick={() => { setView('calc'); scrollToSection('T'); }} aria-label="Go to T">
+              <Button variant="hud" size="sm" className={`relative hud-button text-xs ${dirty.T ? 'active' : ''}`} onClick={() => { setView('calc'); scrollToSection('T'); }} aria-label="Go to T">
                 T
                 {dirty.T && <span className="absolute -top-0.5 -right-0.5 h-2 w-2 rounded-full bg-primary" />}
               </Button>
-              <Button variant="hud" size="sm" className="relative hud-button text-xs" onClick={() => { setView('calc'); scrollToSection('O'); }} aria-label="Go to O">
+              <Button variant="hud" size="sm" className={`relative hud-button text-xs ${dirty.O ? 'active' : ''}`} onClick={() => { setView('calc'); scrollToSection('O'); }} aria-label="Go to O">
                 O
                 {dirty.O && <span className="absolute -top-0.5 -right-0.5 h-2 w-2 rounded-full bg-primary" />}
               </Button>
-              <Button variant="hud" size="sm" className="relative hud-button text-xs" onClick={() => { setView('calc'); scrollToSection('R'); }} aria-label="Go to R">
+              <Button variant="hud" size="sm" className={`relative hud-button text-xs ${dirty.R ? 'active' : ''}`} onClick={() => { setView('calc'); scrollToSection('R'); }} aria-label="Go to R">
                 R
                 {dirty.R && <span className="absolute -top-0.5 -right-0.5 h-2 w-2 rounded-full bg-primary" />}
               </Button>
