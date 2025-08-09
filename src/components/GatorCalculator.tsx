@@ -4,6 +4,7 @@ import { Slider } from '@/components/ui/slider';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import SpicyModal from './SpicyModal';
 
 interface AttackerState {
   gunnery: number;
@@ -144,6 +145,8 @@ const GatorCalculator: React.FC = () => {
       return [];
     }
   });
+
+  const [isSpicyModalOpen, setIsSpicyModalOpen] = useState(false);
 
   useEffect(() => {
     try {
@@ -905,9 +908,24 @@ const GatorCalculator: React.FC = () => {
                 <PlusCircle className="w-4 h-4" />
                 <span className="ml-1 hidden xl:inline">New Score</span>
               </Button>
+              <Button 
+                variant="hud" 
+                size="sm" 
+                className="hud-button text-xs" 
+                onClick={() => setIsSpicyModalOpen(true)} 
+                aria-label="Spicy mode"
+              >
+                <span className="text-base">🌶️</span>
+                <span className="ml-1 hidden xl:inline">Spicy</span>
+              </Button>
             </div>
           </Card>
         </div>
+        
+        <SpicyModal 
+          isOpen={isSpicyModalOpen} 
+          onClose={() => setIsSpicyModalOpen(false)} 
+        />
       </div>
   );
 };
