@@ -11,25 +11,26 @@ const queryClient = new QueryClient();
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
-      {/* Subtle mech background image behind UI */}
-      <div aria-hidden className="fixed inset-0 -z-10 pointer-events-none">
+      <div aria-hidden className="fixed inset-0 z-0 pointer-events-none">
         <img
           src="/lovable-uploads/144024ae-1546-4c33-ac58-1754bfb91f55.png"
-          alt=""
+          alt="Mech silhouette at sunset background"
           loading="lazy"
-          className="h-full w-full object-cover opacity-45"
+          className="h-full w-full object-cover opacity-55"
         />
-        <div className="absolute inset-0 bg-background/30" />
+        <div className="absolute inset-0 bg-background/25" />
       </div>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
+      <div className="relative z-10">
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Index />} />
+            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </BrowserRouter>
+      </div>
     </TooltipProvider>
   </QueryClientProvider>
 );

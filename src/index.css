@@ -174,7 +174,7 @@
 
   /* Interactive Elements */
   .hud-button {
-    @apply px-4 py-2 rounded-md border border-primary/30 bg-primary/10;
+    @apply px-4 py-2 rounded-md border border-primary/30 bg-primary/10 text-xs leading-tight whitespace-normal break-words text-center;
     background: linear-gradient(135deg, hsl(195 100% 50% / 0.1), hsl(195 100% 50% / 0.2));
     transition: var(--transition-smooth);
     box-shadow: var(--shadow-inset);
