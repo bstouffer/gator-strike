@@ -552,7 +552,7 @@ const GatorCalculator: React.FC = () => {
           {/* G.A.T.O.R. Breakdown */}
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-4">
           {/* G - Gunnery */}
-          <Card className="hud-panel p-4">
+          <div ref={sectionRefs.G}><Card className="hud-panel p-4">
             <div className="space-y-4">
               <h3 className="gator-header text-center">G - GUNNERY</h3>
               <div className="text-center">
@@ -573,10 +573,10 @@ const GatorCalculator: React.FC = () => {
                 <div className="text-center text-sm">{attacker.gunnery}</div>
               </div>
             </div>
-          </Card>
+          </Card></div>
 
           {/* A - Attacker */}
-          <Card className="hud-panel p-4">
+          <div ref={sectionRefs.A}><Card className="hud-panel p-4">
             <div className="space-y-4">
               <h3 className="gator-header text-center">A - ATTACKER</h3>
               <div className="text-center">
@@ -615,10 +615,10 @@ const GatorCalculator: React.FC = () => {
                 />
               </div>
             </div>
-          </Card>
+          </Card></div>
 
           {/* T - Target */}
-          <Card className="hud-panel p-4">
+          <div ref={sectionRefs.T}><Card className="hud-panel p-4">
             <div className="space-y-4">
               <h3 className="gator-header text-center">T - TARGET</h3>
               <div className="text-center">
@@ -658,10 +658,10 @@ const GatorCalculator: React.FC = () => {
                 </Button>
               </div>
             </div>
-          </Card>
+          </Card></div>
 
           {/* O - Other */}
-          <Card className="hud-panel p-4">
+          <div ref={sectionRefs.O}><Card className="hud-panel p-4">
             <div className="space-y-4">
               <h3 className="gator-header text-center">O - OTHER</h3>
               <div className="text-center">
@@ -704,10 +704,10 @@ const GatorCalculator: React.FC = () => {
                 </div>
               </div>
             </div>
-          </Card>
+          </Card></div>
 
           {/* R - Range */}
-          <Card className="hud-panel p-4">
+          <div ref={sectionRefs.R}><Card className="hud-panel p-4">
             <div className="space-y-4">
               <h3 className="gator-header text-center">R - RANGE</h3>
               <div className="text-center">
@@ -732,7 +732,7 @@ const GatorCalculator: React.FC = () => {
                 </div>
               </div>
             </div>
-          </Card>
+          </Card></div>
         </div>
 
         {/* Notes */}
