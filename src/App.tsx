@@ -17,9 +17,9 @@ const App = () => (
           src="/lovable-uploads/144024ae-1546-4c33-ac58-1754bfb91f55.png"
           alt=""
           loading="lazy"
-          className="h-full w-full object-cover opacity-25 mix-blend-luminosity"
+          className="h-full w-full object-cover opacity-45"
         />
-        <div className="absolute inset-0 bg-background/50" />
+        <div className="absolute inset-0 bg-background/30" />
       </div>
       <Toaster />
       <Sonner />
