@@ -458,7 +458,7 @@ const GatorCalculator: React.FC = () => {
                   {(['stationary', 'walked', 'ran', 'jumped'] as const).map((mode) => (
                     <Button
                       key={mode}
-                      variant="outline"
+                      variant="hud"
                       size="sm"
                       className={`hud-button text-xs ${attacker.moved_mode === mode ? 'active' : ''}`}
                       onClick={() => setAttacker(prev => ({ ...prev, moved_mode: mode }))}
@@ -511,7 +511,7 @@ const GatorCalculator: React.FC = () => {
               </div>
               <div className="grid grid-cols-2 gap-1">
                 <Button
-                  variant="outline"
+                  variant="hud"
                   size="sm"
                   className={`hud-button text-xs ${target.target_jumped_this_turn ? 'active' : ''}`}
                   onClick={() => setTarget(prev => ({ ...prev, target_jumped_this_turn: !prev.target_jumped_this_turn }))}
@@ -519,7 +519,7 @@ const GatorCalculator: React.FC = () => {
                   JUMPED
                 </Button>
                 <Button
-                  variant="outline"
+                  variant="hud"
                   size="sm"
                   className={`hud-button text-xs ${target.target_is_immobile ? 'active' : ''}`}
                   onClick={() => setTarget(prev => ({ ...prev, target_is_immobile: !prev.target_is_immobile }))}
@@ -540,7 +540,7 @@ const GatorCalculator: React.FC = () => {
               <div className="space-y-2 text-xs">
                 <div className="grid grid-cols-2 gap-1">
                   <Button
-                    variant="outline"
+                    variant="hud"
                     size="sm"
                     className={`hud-button text-xs ${target.target_is_in_light_woods ? 'active' : ''}`}
                     onClick={() => setTarget(prev => ({ ...prev, target_is_in_light_woods: !prev.target_is_in_light_woods }))}
@@ -548,7 +548,7 @@ const GatorCalculator: React.FC = () => {
                     LT WOODS
                   </Button>
                   <Button
-                    variant="outline"
+                    variant="hud"
                     size="sm"
                     className={`hud-button text-xs ${target.target_is_in_heavy_woods ? 'active' : ''}`}
                     onClick={() => setTarget(prev => ({ ...prev, target_is_in_heavy_woods: !prev.target_is_in_heavy_woods }))}
@@ -556,7 +556,7 @@ const GatorCalculator: React.FC = () => {
                     HV WOODS
                   </Button>
                   <Button
-                    variant="outline"
+                    variant="hud"
                     size="sm"
                     className={`hud-button text-xs ${target.has_partial_cover ? 'active' : ''}`}
                     onClick={() => setTarget(prev => ({ ...prev, has_partial_cover: !prev.has_partial_cover }))}
@@ -564,7 +564,7 @@ const GatorCalculator: React.FC = () => {
                     COVER
                   </Button>
                   <Button
-                    variant="outline"
+                    variant="hud"
                     size="sm"
                     className={`hud-button text-xs ${attacker.is_making_indirect_fire ? 'active' : ''}`}
                     onClick={() => setAttacker(prev => ({ ...prev, is_making_indirect_fire: !prev.is_making_indirect_fire }))}

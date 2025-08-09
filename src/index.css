@@ -137,6 +137,7 @@
 
   body {
     @apply bg-background text-foreground font-mono;
+    -webkit-tap-highlight-color: transparent;
     background-image: 
       radial-gradient(circle at 20% 50%, hsl(195 100% 50% / 0.1) 0%, transparent 50%),
       radial-gradient(circle at 80% 20%, hsl(25 100% 60% / 0.05) 0%, transparent 50%);
