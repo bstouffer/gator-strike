@@ -271,8 +271,13 @@ const GatorCalculator: React.FC = () => {
       T = -4;
       notes.push("Target immobile: -4");
     } else {
-      // TMM based on hexes moved
-      const hexes = target.target_moved_hexes_from_last_reverse;
+      // Zero out movement if target is prone (either state)
+      const effectiveHexes = target.target_is_prone === 'no' 
+        ? target.target_moved_hexes_from_last_reverse 
+        : 0;
+
+      // TMM based on effective hexes moved
+      const hexes = effectiveHexes;
       if (hexes <= 2) T = 0;
       else if (hexes <= 4) T = 1;
       else if (hexes <= 6) T = 2;
@@ -285,15 +290,15 @@ const GatorCalculator: React.FC = () => {
         T += 1;
         notes.push("Target jumped: +1");
       }
-    }
 
-    // Target prone modifications
-    if (target.target_is_prone === 'adjacent') {
-      T -= 2;
-      notes.push("Target prone (adjacent): -2");
-    } else if (target.target_is_prone === 'non_adjacent') {
-      T += 1;
-      notes.push("Target prone (non-adjacent): +1");
+      // Target prone modifications (after zeroing base movement)
+      if (target.target_is_prone === 'adjacent') {
+        T -= 2;
+        notes.push("Target prone (adjacent): -2");
+      } else if (target.target_is_prone === 'non_adjacent') {
+        T += 1;
+        notes.push("Target prone (non-adjacent): +1");
+      }
     }
 
     // O - Other Modifiers
@@ -672,14 +677,33 @@ const GatorCalculator: React.FC = () => {
                 >
                   JUMPED
                 </Button>
-                <Button
-                  variant="hud"
-                  size="sm"
-                  className={`hud-button text-xs ${target.target_is_immobile ? 'active' : ''}`}
-                  onClick={() => { setTarget(prev => ({ ...prev, target_is_immobile: !prev.target_is_immobile })); setDirty(d => ({ ...d, T: true })); }}
-                >
-                  IMMOBILE
-                </Button>
+                <div className="col-span-2 flex justify-center">
+                  <ToggleGroup
+                    type="single"
+                    value={target.target_is_immobile ? 'immobile' : (target.target_is_prone === 'no' ? '' : (target.target_is_prone === 'adjacent' ? 'prone_adjacent' : 'prone'))}
+                    onValueChange={(v) => {
+                      setDirty(d => ({ ...d, T: true }));
+                      if (!v) {
+                        setTarget(prev => ({ ...prev, target_is_prone: 'no', target_is_immobile: false }));
+                        return;
+                      }
+                      if (v === 'immobile') {
+                        setTarget(prev => ({ ...prev, target_is_prone: 'no', target_is_immobile: true }));
+                      } else if (v === 'prone_adjacent') {
+                        setTarget(prev => ({ ...prev, target_is_prone: 'adjacent', target_is_immobile: false }));
+                      } else if (v === 'prone') {
+                        setTarget(prev => ({ ...prev, target_is_prone: 'non_adjacent', target_is_immobile: false }));
+                      }
+                    }}
+                    variant="outline"
+                    size="sm"
+                    aria-label="Target status"
+                  >
+                    <ToggleGroupItem value="prone_adjacent">Prone (Adjacent)</ToggleGroupItem>
+                    <ToggleGroupItem value="prone">Prone</ToggleGroupItem>
+                    <ToggleGroupItem value="immobile">Immobile</ToggleGroupItem>
+                  </ToggleGroup>
+                </div>
               </div>
             </div>
           </Card></div>
