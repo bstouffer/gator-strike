@@ -161,7 +161,7 @@ const GatorCalculator: React.FC = () => {
   const scrollToSection = (key: keyof typeof sectionRefs) => {
     const el = sectionRefs[key].current;
     if (!el) return;
-    const offset = 32; // ~30px offset to reveal header under top bar
+    const offset = 50; // ~50px offset to reveal header under top bar
     const y = el.getBoundingClientRect().top + window.scrollY - offset;
     window.scrollTo({ top: y, behavior: 'smooth' });
   };
