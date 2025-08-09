@@ -502,7 +502,7 @@ const GatorCalculator: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background p-4 pb-28 pl-20">
+    <div className="min-h-screen bg-transparent p-4 pb-28 pl-20">
       {/* Floating condensed TN chip */}
       {showBar && (
         <div className="fixed top-3 left-0 right-0 z-50 pointer-events-none">
@@ -619,7 +619,7 @@ const GatorCalculator: React.FC = () => {
                       key={mode}
                       variant="hud"
                       size="sm"
-                      className={`hud-button text-xs ${attacker.moved_mode === mode ? 'active' : ''}`}
+                      className={`hud-button text-xs whitespace-normal break-words leading-tight ${attacker.moved_mode === mode ? 'active' : ''}`}
                       onClick={() => { setAttacker(prev => ({ ...prev, moved_mode: mode })); setDirty(d => ({ ...d, A: true })); }}
                     >
                       {mode.toUpperCase()}
