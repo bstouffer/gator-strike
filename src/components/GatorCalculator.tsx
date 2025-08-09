@@ -548,8 +548,9 @@ const GatorCalculator: React.FC = () => {
         )}
 
         {view !== 'history' && (
-        {/* G.A.T.O.R. Breakdown */}
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-4">
+          <>
+          {/* G.A.T.O.R. Breakdown */}
+          <div className="grid grid-cols-1 lg:grid-cols-5 gap-4">
           {/* G - Gunnery */}
           <Card className="hud-panel p-4">
             <div className="space-y-4">
@@ -753,6 +754,8 @@ const GatorCalculator: React.FC = () => {
           </Card>
         )}
         <div className="h-24 md:h-12" aria-hidden="true" />
+          </>
+        )}
         </div>
         {/* Bottom Tab Bar */}
         <div className="fixed bottom-3 left-0 right-0 z-50">
@@ -796,7 +799,6 @@ const GatorCalculator: React.FC = () => {
           </div>
         </div>
       </div>
-    </div>
   );
 };
 
