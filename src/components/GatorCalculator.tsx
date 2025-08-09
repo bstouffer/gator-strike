@@ -673,7 +673,7 @@ const GatorCalculator: React.FC = () => {
                   variant="hud"
                   size="sm"
                   className={`hud-button text-xs ${target.target_jumped_this_turn ? 'active' : ''}`}
-                  onClick={() => { setTarget(prev => ({ ...prev, target_jumped_this_turn: !prev.target_jumped_this_turn })); setDirty(d => ({ ...d, T: true })); }}
+                  onClick={() => { setTarget(prev => { const next = !prev.target_jumped_this_turn; if (next) { return { ...prev, target_jumped_this_turn: true, target_is_prone: 'no', target_is_immobile: false }; } return { ...prev, target_jumped_this_turn: false }; }); setDirty(d => ({ ...d, T: true })); }}
                 >
                   JUMPED
                 </Button>
@@ -688,11 +688,11 @@ const GatorCalculator: React.FC = () => {
                         return;
                       }
                       if (v === 'immobile') {
-                        setTarget(prev => ({ ...prev, target_is_prone: 'no', target_is_immobile: true }));
+                        setTarget(prev => ({ ...prev, target_is_prone: 'no', target_is_immobile: true, target_jumped_this_turn: false }));
                       } else if (v === 'prone_adjacent') {
-                        setTarget(prev => ({ ...prev, target_is_prone: 'adjacent', target_is_immobile: false }));
+                        setTarget(prev => ({ ...prev, target_is_prone: 'adjacent', target_is_immobile: false, target_jumped_this_turn: false }));
                       } else if (v === 'prone') {
-                        setTarget(prev => ({ ...prev, target_is_prone: 'non_adjacent', target_is_immobile: false }));
+                        setTarget(prev => ({ ...prev, target_is_prone: 'non_adjacent', target_is_immobile: false, target_jumped_this_turn: false }));
                       }
                     }}
                     variant="outline"
