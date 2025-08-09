@@ -656,11 +656,25 @@ const GatorCalculator: React.FC = () => {
                 </div>
               </div>
               <div className="space-y-2">
-                <label className="text-sm text-muted-foreground">Hexes Moved: {target.target_moved_hexes_from_last_reverse}</label>
+                <label className="text-sm text-muted-foreground">Hexes Moved: {target.target_is_immobile || target.target_is_prone !== 'no' ? 0 : target.target_moved_hexes_from_last_reverse}</label>
                 <Slider
-                  value={[target.target_moved_hexes_from_last_reverse]}
-                  onValueChange={(value) => { setTarget(prev => ({ ...prev, target_moved_hexes_from_last_reverse: value[0] })); setDirty(d => ({ ...d, T: true })); }}
-                  onValueCommit={(value) => { setTarget(prev => ({ ...prev, target_moved_hexes_from_last_reverse: value[0] })); setDirty(d => ({ ...d, T: true })); }}
+                  value={[target.target_is_immobile || target.target_is_prone !== 'no' ? 0 : target.target_moved_hexes_from_last_reverse]}
+                  onValueChange={(value) => {
+                    if (target.target_is_immobile || target.target_is_prone !== 'no') {
+                      setTarget(prev => ({ ...prev, target_moved_hexes_from_last_reverse: 0 }));
+                    } else {
+                      setTarget(prev => ({ ...prev, target_moved_hexes_from_last_reverse: value[0] }));
+                    }
+                    setDirty(d => ({ ...d, T: true }));
+                  }}
+                  onValueCommit={(value) => {
+                    if (target.target_is_immobile || target.target_is_prone !== 'no') {
+                      setTarget(prev => ({ ...prev, target_moved_hexes_from_last_reverse: 0 }));
+                    } else {
+                      setTarget(prev => ({ ...prev, target_moved_hexes_from_last_reverse: value[0] }));
+                    }
+                    setDirty(d => ({ ...d, T: true }));
+                  }}
                   min={0}
                   max={30}
                   step={1}
@@ -688,11 +702,11 @@ const GatorCalculator: React.FC = () => {
                         return;
                       }
                       if (v === 'immobile') {
-                        setTarget(prev => ({ ...prev, target_is_prone: 'no', target_is_immobile: true, target_jumped_this_turn: false }));
+                        setTarget(prev => ({ ...prev, target_is_prone: 'no', target_is_immobile: true, target_jumped_this_turn: false, target_moved_hexes_from_last_reverse: 0 }));
                       } else if (v === 'prone_adjacent') {
-                        setTarget(prev => ({ ...prev, target_is_prone: 'adjacent', target_is_immobile: false, target_jumped_this_turn: false }));
+                        setTarget(prev => ({ ...prev, target_is_prone: 'adjacent', target_is_immobile: false, target_jumped_this_turn: false, target_moved_hexes_from_last_reverse: 0 }));
                       } else if (v === 'prone') {
-                        setTarget(prev => ({ ...prev, target_is_prone: 'non_adjacent', target_is_immobile: false, target_jumped_this_turn: false }));
+                        setTarget(prev => ({ ...prev, target_is_prone: 'non_adjacent', target_is_immobile: false, target_jumped_this_turn: false, target_moved_hexes_from_last_reverse: 0 }));
                       }
                     }}
                     variant="outline"
